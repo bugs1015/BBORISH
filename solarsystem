@@ -1,11 +1,11 @@
 from visual import *
-from visual.graph import *
+from visual.graph import * #그래프 설정
 
 scene = display (title = 'Planets Orbiting the Sun', width = 800, height = 800, range = vec(25000, 25000, 25000), center = vec(1000, 0, 0))
 scene.autoscale = True 
 
 sun = sphere (pos=vec(0,0,0), radius = 100, texture = textures.stucco, color = color.yellow, mass = 10)
-
+#태양계 행성들의 지름, 위치, 색, 공전 속도 및 궤도 설정
 mercury = sphere (pos = vec(200,0,0), radius = 50, texture = textures.wood, color = color.red)
 mercury.trail = curve(color = mercury.color)
 mercury.velocity = vector(0,0,295)
@@ -46,8 +46,9 @@ pluto = sphere (pos = vec(20534.968,0,0), radius = 75, texture = textures.wood, 
 pluto.trail = curve(color = pluto.color)
 pluto.velocity = vector(0,0,.01)
 
-G = -6.7*10**-4
+G = -6.7*10**-4 #중력 상수 설정
 
+#행성들의 실제 질량
 m_sun = 2*10**10
 m_mercury = 3.29*10**3
 m_venus = 4.87*10**4
@@ -61,7 +62,8 @@ m_neptune = 1.02*10**6
 m_pluto = 1.31*10**2
 m_spaceship =  7.0*10**5
 
-mercury_RealRatio = 1.600
+#행성들의 실제 공전속도(지구 기준 상대적)
+mercury_RealRatio = 1.600 
 venus_RealRatio = 1.177
 earth_RealRatio = 1.000
 mars_RealRatio = 0.805
@@ -71,13 +73,13 @@ uranus_RealRatio = 0.228
 neptune_RealRatio = 0.182
 pluto_RealRatio = 0.158
 
-t = 0
+t = 0 #그래프에서의 초기속도
 deltat = .01
 time_interval = 0.05
 time_interval_int = int(time_interval/deltat)
 
 graphpos = gdisplay (x=600, y=0, xtitle = "Time", ytitle="Position", width = 600, height=400, title="Position vs.Time of Earth")
-earthposx = gcurve(gdisplay=graphpos, color = color.blue)
+earthposx = gcurve(gdisplay=graphpos, color = color.blue) #그래프 초기 설정
 
 graphv = gdisplay(x=600, y=500, xtitle = "Time", ytitle="Velocity", width = 600, height = 400, foreground = color.black, background = color.white, title= "Velocity vs. Time of Earth")
 earthvelocity = gcurve(gdisplay = graphv, color = color.blue)
@@ -117,10 +119,10 @@ plutoRealRatio = gdots(gdisplay = graphSpeedRatios, color = color.orange)
 while True :
     rate(10000)
     
-    mercury.trail.append(pos=mercury.pos)
+    mercury.trail.append(pos=mercury.pos)#각 행성의 위치를 벡터로 설정하여 각 행성의 좌표 비교
     distanceMercury = mag(mercury.pos)
     UnitVectorMercury = (mercury.pos - sun.pos)/distanceMercury
-    FgravMercury = (G*m_sun*m_mercury*UnitVectorMercury)/distanceMercury**2
+    FgravMercury = (G*m_sun*m_mercury*UnitVectorMercury)/distanceMercury**2#태양-행성간 만유인력
     mercury.velocity = mercury.velocity +(FgravMercury/m_mercury)*deltat
     mercury.pos = mercury.pos + mercury.velocity*deltat
     mercury.rotate(angle = radians(10), axis = vec(0,1,0))
